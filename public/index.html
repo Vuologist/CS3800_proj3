@@ -17,6 +17,10 @@
       body {
         background-color: rgb(238, 238, 238);
       }
+      
+      #render {
+        width: 100%;
+      }
 
       .container {
         display: flex;
@@ -24,14 +28,15 @@
         align-items: center;
         height: 100%;
       }
+
+      .btn {
+        margin-right: 10px;
+      }
+
     </style>
   </head>
   <body>
-    <div class="container">
-      <div id="render">
-        
-      </div>
-    </div>
+    <div class="container"><div id="render"></div></div>
 
     <script
       src="https://unpkg.com/react@16/umd/react.development.js"
@@ -52,5 +57,86 @@
       integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
       crossorigin="anonymous"
     ></script>
+
+    <script type="text/babel">
+      "use strict";
+
+      class Form extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {value: ""};
+          
+
+          this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+        handleSubmit = (event) => {
+          event.preventDefault();
+          console.log("handleSubmit fired");
+          
+          const target = event.target;
+          let input = target.value;
+          console.log(input);
+          fetch("/?input=" + input).then(
+            data => {return(data.json());
+          }).then( json => {
+            this.setState({
+              value: json
+            })
+          });
+
+        }
+ 
+        render() {
+          return (
+            <React.Fragment>
+              <div className="card">
+                <div className="card-header text-center">
+                  Encryption/Decryption Generator
+                </div>
+                <div className="card-body">
+                  <form onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="unencodedMsg">Unencoded Text</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="unencoded"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="encodedMsg">Encoded Text</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="unencoded"
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-primary">
+                      Submit
+                    </button>
+                    <button type="button" className="btn btn-primary">
+                      Clear
+                    </button>
+                  </form>
+                  <div className="form-group">
+                    <label htmlFor="result">Result</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="result"
+                      value={this.state.value}
+                      disabled/>
+                  </div>
+                </div>
+              </div>
+            </React.Fragment>
+          );
+        }
+      }
+
+      const domContainer = document.querySelector("#render");
+      ReactDOM.render(<Form />, domContainer);
+    </script>
   </body>
 </html>
