@@ -1,12 +1,14 @@
-var express = require("express");
-var app = express();
+const express = require("express");
+const bodyParser = require("body-parser");
 
-app.get('/', function(req, res) {
-    res.send("Hello world");
+const app = express();
+
+app.use(express.static("public"));
+
+app.use(bodyParser.json);
+
+app.use(require("./routes/api"));
+
+app.listen(3000, () => {
+  console.log("connected on port 3000");
 });
-
-app.post('/hello', function(req, res){
-    res.send("You just called the post method at '/hello'!\n");
- });
-
-app.listen(3000, () => { console.log("connected on port 3000"); })
