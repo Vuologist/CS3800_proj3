@@ -78,13 +78,13 @@
           const target = event.target;
           let input = target.value;
           //console.log(this.state.value);
-          fetch("/?input=" + this.state.value)
+          fetch("/api/encode?input=" + this.state.value)
             .then(data => {
               console.log(data);      
               return data.json();
             })
             .then(json => {
-              //console.log(json);
+              console.log(json);
               this.setState({
                 value2: json
               });
