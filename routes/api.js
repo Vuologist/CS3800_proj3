@@ -2,34 +2,32 @@ const express = require("express");
 const router = express.Router();
 
 //get hex conversion
- router.get("/encode", function(req, res) {
-   console.log(req.query.input);
+router.get("/encode", function(req, res) {
+  console.log(req.query.input);
 
-   let input = req.query.input.toString();
-   let output = Buffer.from(input, "utf8").toString('hex');
+  let input = req.query.input.toString();
+  let output = Buffer.from(input, "utf8").toString("hex");
 
-   console.log(output);
+  console.log(output);
 
-   res.send({
-     "type": "GET",
-     "name": output
-   });
-
- });
+  res.send({
+    type: "GET",
+    result: output
+  });
+});
 
 router.post("/encode", function(req, res) {
   console.log(req.body);
 
   let input = req.body.input.toString();
-  let output = Buffer.from(input, "utf8").toString('hex');
+  let output = Buffer.from(input, "utf8").toString("hex");
 
   console.log(output);
 
   res.send({
     type: "POST",
-    name: output
+    result: output
   });
 });
-
 
 module.exports = router;

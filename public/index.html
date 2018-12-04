@@ -64,11 +64,36 @@
         constructor(props) {
           super(props);
           this.state = {
-            value: "hello",
-            value2: ""
+            unencoded: "",
+            encoded: "",
+            result: ""
           };
 
+          this.handleOnUnencodedChange = this.handleOnUnencodedChange.bind(
+            this
+          );
+          this.handleOnEncodedChange = this.handleOnEncodedChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+        handleOnUnencodedChange = event => {
+          this.setState({
+            unencoded: event.target.value
+          });
+        };
+
+        handleOnEncodedChange = event => {
+          this.setState({
+            encoded: event.target.value
+          });
+        };
+
+        resetFields = () => {
+          this.setState({
+            unencoded: "",
+            encoded: "",
+            result: ""
+          });
         }
 
         handleSubmit = event => {
@@ -76,19 +101,18 @@
           console.log("handleSubmit fired");
 
           const target = event.target;
-          let input = target.value;
-          //console.log(this.state.value);
-          fetch("/api/encode?input=" + this.state.value)
+          let input = this.state.unencoded ? target.unencoded.value : target.encoded.value;
+          console.log(input);
+          fetch("/api/encode?input=" + input)
             .then(data => {
-              console.log(data);      
+              console.log(data);
               return data.json();
             })
             .then(json => {
-              console.log(json);
+              console.log(json.result);
               this.setState({
-                value2: json
+                result: json.result
               });
-              console.log("value2: " + this.state.value2);
             });
         };
 
@@ -107,22 +131,26 @@
                         type="text"
                         className="form-control"
                         name="unencoded"
+                        value={this.state.unencoded}
+                        onChange={this.handleOnUnencodedChange}
+                        disabled={this.state.encoded}
                       />
                     </div>
-                    {/*
                     <div className="form-group">
                       <label htmlFor="encodedMsg">Encoded Text</label>
                       <input
                         type="text"
                         className="form-control"
-                        name="unencoded"
+                        name="encoded"
+                        value={this.state.encoded}
+                        onChange={this.handleOnEncodedChange}
+                        disabled={this.state.unencoded}
                       />
                     </div>
-                    */}
                     <button type="submit" className="btn btn-primary">
                       Submit
                     </button>
-                    <button type="button" className="btn btn-primary">
+                    <button type="button" className="btn btn-primary" onClick={this.resetFields}>
                       Clear
                     </button>
                   </form>
