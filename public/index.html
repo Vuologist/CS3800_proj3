@@ -110,8 +110,12 @@
           let input = this.state.unencoded
             ? target.unencoded.value
             : target.encoded.value;
+
+          let flag = this.state.unencoded
+            ? "encode"
+            : "decode";
           console.log(input);
-          fetch("/api/encode?input=" + input)
+          fetch("/api/encode?input=" + input + "&flag=" + flag)
             .then(data => {
               console.log(data);
               return data.json();
@@ -179,7 +183,6 @@
                       type="text"
                       className="form-control"
                       id="result"
-                      ref={(input) => this.input1 = input}
                       value={this.state.result}
                       readOnly
                     />
