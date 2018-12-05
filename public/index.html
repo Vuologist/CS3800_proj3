@@ -94,6 +94,12 @@
             encoded: "",
             result: ""
           });
+        };
+
+        copy = () => {
+          console.log("fired copy");
+          document.querySelector("#result").select();
+          document.execCommand("copy");
         }
 
         handleSubmit = event => {
@@ -101,7 +107,9 @@
           console.log("handleSubmit fired");
 
           const target = event.target;
-          let input = this.state.unencoded ? target.unencoded.value : target.encoded.value;
+          let input = this.state.unencoded
+            ? target.unencoded.value
+            : target.encoded.value;
           console.log(input);
           fetch("/api/encode?input=" + input)
             .then(data => {
@@ -150,9 +158,20 @@
                     <button type="submit" className="btn btn-primary">
                       Submit
                     </button>
-                    <button type="button" className="btn btn-primary" onClick={this.resetFields}>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={this.resetFields}
+                    >
                       Clear
                     </button>
+                    {document.queryCommandSupported("copy") && <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={this.copy}
+                    >
+                      Copy Result
+                    </button>}
                   </form>
                   <div className="form-group">
                     <label htmlFor="result">Result</label>
@@ -160,8 +179,9 @@
                       type="text"
                       className="form-control"
                       id="result"
+                      ref={(input) => this.input1 = input}
                       value={this.state.result}
-                      disabled
+                      readOnly
                     />
                   </div>
                 </div>
