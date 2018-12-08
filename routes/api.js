@@ -1,3 +1,4 @@
+var caesar = require('caesar-cipher-al');
 const express = require("express");
 const router = express.Router();
 
@@ -5,14 +6,19 @@ const router = express.Router();
 router.get("/encode", function(req, res) {
   console.log(req.query.input);
 
+  let holder;
   let output;
 
   if (req.query.flag === "encode") {
     let input = req.query.input.toString();
-    output = Buffer.from(input, "utf8").toString("hex");
+    holder = caesar.encrypt(input, 6);
+    output = Buffer.from(holder, "utf8").toString("hex");
+    console.log(holder);
+     
   } else if (req.query.flag === "decode") {
     let input = req.query.input.toString();
-    output = Buffer.from(input, "hex").toString("utf8");
+    holder = Buffer.from(input, "hex").toString("utf8");
+    output = caesar.decrypt(holder, 6);
   }
 
   console.log(output);
