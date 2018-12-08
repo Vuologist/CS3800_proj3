@@ -96,12 +96,6 @@
           });
         };
 
-        copy = () => {
-          console.log("fired copy");
-          document.querySelector("#result").select();
-          document.execCommand("copy");
-        }
-
         handleSubmit = event => {
           event.preventDefault();
           console.log("handleSubmit fired");
@@ -111,9 +105,7 @@
             ? target.unencoded.value
             : target.encoded.value;
 
-          let flag = this.state.unencoded
-            ? "encode"
-            : "decode";
+          let flag = this.state.unencoded ? "encode" : "decode";
           console.log(input);
           fetch("/api/encode?input=" + input + "&flag=" + flag)
             .then(data => {
@@ -122,9 +114,17 @@
             })
             .then(json => {
               console.log(json.result);
-              this.setState({
-                result: json.result
-              });
+              if (flag === "encode") {
+                this.setState({
+                  unencoded: "",
+                  encoded: json.result
+                });
+              } else {
+                this.setState({
+                  unencoded: json.result,
+                  encoded: ""
+                });
+              }
             });
         };
 
@@ -169,24 +169,7 @@
                     >
                       Clear
                     </button>
-                    {document.queryCommandSupported("copy") && <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={this.copy}
-                    >
-                      Copy Result
-                    </button>}
                   </form>
-                  <div className="form-group">
-                    <label htmlFor="result">Result</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="result"
-                      value={this.state.result}
-                      readOnly
-                    />
-                  </div>
                 </div>
               </div>
             </React.Fragment>
