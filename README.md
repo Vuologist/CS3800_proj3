@@ -17,3 +17,7 @@ If it doesn't return a version, make sure nodejs is installed correctly or perfo
 ```bash
 node index.js
 ```
+
+## HowTo
+
+Input valid data into either the encrypt or decrypt text box, followed by 'submit'. A rest call will be performed and the result shown in the opposite box. One textbox will always be disabled if the other box has content. The submit button will determine whether to decrypt or encrypt the data. To enable both textboxes, hit the clear button.
