@@ -1,0 +1,184 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CS3800_Project_3</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      body {
+        background-color: rgb(238, 238, 238);
+      }
+
+      #render {
+        width: 100%;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+
+      .btn {
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container"><div id="render"></div></div>
+
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/babel">
+      "use strict";
+
+      class Form extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            unencoded: "",
+            encoded: "",
+            result: ""
+          };
+
+          this.handleOnUnencodedChange = this.handleOnUnencodedChange.bind(
+            this
+          );
+          this.handleOnEncodedChange = this.handleOnEncodedChange.bind(this);
+          this.handleSubmit = this.handleSubmit.bind(this);
+        }
+
+        handleOnUnencodedChange = event => {
+          this.setState({
+            unencoded: event.target.value
+          });
+        };
+
+        handleOnEncodedChange = event => {
+          this.setState({
+            encoded: event.target.value
+          });
+        };
+
+        resetFields = () => {
+          this.setState({
+            unencoded: "",
+            encoded: "",
+            result: ""
+          });
+        };
+
+        handleSubmit = event => {
+          event.preventDefault();
+          console.log("handleSubmit fired");
+
+          const target = event.target;
+          let input = this.state.unencoded
+            ? target.unencoded.value
+            : target.encoded.value;
+
+          let flag = this.state.unencoded ? "encode" : "decode";
+          console.log(input);
+          fetch("/api/encode?input=" + input + "&flag=" + flag)
+            .then(data => {
+              console.log(data);
+              return data.json();
+            })
+            .then(json => {
+              console.log(json.result);
+              if (flag === "encode") {
+                this.setState({
+                  unencoded: "",
+                  encoded: json.result
+                });
+              } else {
+                this.setState({
+                  unencoded: json.result,
+                  encoded: ""
+                });
+              }
+            });
+        };
+
+        render() {
+          return (
+            <React.Fragment>
+              <div className="card">
+                <div className="card-header text-center">
+                  Encryption/Decryption Generator
+                </div>
+                <div className="card-body">
+                  <form onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="unencodedMsg">Unencoded Text</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="unencoded"
+                        value={this.state.unencoded}
+                        onChange={this.handleOnUnencodedChange}
+                        disabled={this.state.encoded}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="encodedMsg">Encoded Text</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="encoded"
+                        value={this.state.encoded}
+                        onChange={this.handleOnEncodedChange}
+                        disabled={this.state.unencoded}
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-primary">
+                      Submit
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={this.resetFields}
+                    >
+                      Clear
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </React.Fragment>
+          );
+        }
+      }
+
+      const domContainer = document.querySelector("#render");
+      ReactDOM.render(<Form />, domContainer);
+    </script>
+  </body>
+</html>
