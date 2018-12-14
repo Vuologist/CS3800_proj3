@@ -20,23 +20,23 @@ npm install
 
 Repeat this for ./encryption_server to get dependencies for the encryption server.
 ```bash
-cd encryption_server
+cd encryption_server // remember to 'cd ..' out to root directory
 npm install
 ```
 
 ## Run
 
-start by running main server
+You will need two terminals to run this program. Start by running the main server.
 
 ```bash
-cd main_server
+cd main_server // terminal 1
 node index.js
 ```
 
 then run encryption server
 
 ```bash
-cd encryption_server
+cd encryption_server // terminal 2
 node index.js
 ```
 

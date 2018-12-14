@@ -4,7 +4,7 @@ const router = express.Router();
 
 //GET hex conversion
 router.get("/encode", function(req, res) {
-  console.log(req.query.input);
+  //console.log(req.query.input);
   
   let holder;
   let output;

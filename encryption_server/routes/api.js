@@ -29,18 +29,4 @@ router.get("/encode", function(req, res) {
   });
 });
 
-router.post("/encode", function(req, res) {
-  console.log(req.body);
-
-  let input = req.body.input.toString();
-  let output = Buffer.from(input, "utf8").toString("hex");
-
-  console.log(output);
-
-  res.send({
-    type: "POST",
-    result: output
-  });
-});
-
 module.exports = router;
