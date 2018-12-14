@@ -88,58 +88,20 @@
           this.setState({
             unencoded: event.target.value
           });
+          //console.log(this.state.unencoded);
         };
 
         handleOnEncodedChange = event => {
           this.setState({
             encoded: event.target.value
           });
-        };
-
-        resetFields = () => {
-          this.setState({
-            unencoded: "",
-            encoded: "",
-            result: ""
-          });
-        };
-
-        handleSubmit = event => {
-          event.preventDefault();
-          console.log("handleSubmit fired");
-
-          const target = event.target;
-          let input = this.state.unencoded
-            ? target.unencoded.value
-            : target.encoded.value;
-
-          let flag = this.state.unencoded ? "encode" : "decode";
-          console.log(input);
-          fetch("/api/encode?input=" + input + "&flag=" + flag)
-            .then(data => {
-              console.log(data);
-              return data.json();
-            })
-            .then(json => {
-              console.log(json.result);
-              if (flag === "encode") {
-                this.setState({
-                  unencoded: "",
-                  encoded: json.result
-                });
-              } else {
-                this.setState({
-                  unencoded: json.result,
-                  encoded: ""
-                });
-              }
-            });
+          //console.log(this.state.encoded);
         };
 
         encryptMessage = event => {
           event.preventDefault();
-          let input = this.state.unencode;
-          console.log(input);
+          let input = this.state.unencoded;
+          console.log("this is input: " + input);
           fetch("/api/encode?input=" + input + "&flag=encode")
             .then(data => {
               console.log(data);
@@ -149,6 +111,23 @@
               console.log(json.result);
               this.setState({
                 encoded: json.result
+              });
+            });
+        };
+
+        decryptMessage = event => {
+          event.preventDefault();
+          let input = this.state.encoded;
+          console.log("this is input: " + input);
+          fetch("/api/encode?input=" + input + "&flag=decode")
+            .then(data => {
+              console.log(data);
+              return data.json();
+            })
+            .then(json => {
+              console.log(json.result);
+              this.setState({
+                unencoded: json.result
               });
             });
         };
@@ -189,9 +168,7 @@
                         onChange={this.handleOnEncodedChange}
                       />
                     </div>
-                    <button className="btn btn-primary">
-                      Decrypt
-                    </button>
+                    <button onClick={this.decryptMessage} className="btn btn-primary">Decrypt</button>
                   </form>
                 </div>
               </div>
