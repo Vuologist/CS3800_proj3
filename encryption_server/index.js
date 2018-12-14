@@ -4,12 +4,10 @@ const routes = require("./routes/api");
 
 const app = express();
 
-app.use(express.static("public"));
-
 app.use(bodyParser.json());
 
-app.use("/api", routes);
+app.use("/api/encryption", routes);
 
-app.listen(3000, () => {
-  console.log("connected on port 3000");
+app.listen(4000, () => {
+  console.log("connected on port 4000");
 });
