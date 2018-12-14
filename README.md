@@ -40,6 +40,8 @@ cd encryption_server
 node index.js
 ```
 
+Open up Chrome, and enter "http://localhost:3000", where an index page will be served to your browser. From there you can start decrypting and encrypting your data.
+
 ## HowTo
 
 Input valid data into either the encrypt or decrypt text box, then click the corresponding button. A rest call will be performed and the result shown in the opposite box. Output will be displayed on the opposite box and overwrite the existing data if present.
