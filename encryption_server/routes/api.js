@@ -4,7 +4,7 @@ const router = express.Router();
 
 //GET hex conversion
 router.get("/encode", function(req, res) {
-  console.log(req.query.input);
+  //console.log(req.query.input);
 
   let holder;
   let output;
@@ -13,7 +13,7 @@ router.get("/encode", function(req, res) {
     let input = req.query.input.toString();
     holder = caesar.encrypt(input, 6);
     output = Buffer.from(holder, "utf8").toString("hex");
-    console.log(holder);
+    //console.log(holder);
      
   } else if (req.query.flag === "decode") {
     let input = req.query.input.toString();
@@ -21,7 +21,7 @@ router.get("/encode", function(req, res) {
     output = caesar.decrypt(holder, 6);
   }
 
-  console.log(output);
+  //console.log(output);
 
   res.send({
     type: "GET",

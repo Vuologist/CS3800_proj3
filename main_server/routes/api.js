@@ -10,9 +10,9 @@ router.get("/encode", function(req, res) {
   let output;
 
   request.get({ url: "http://localhost:4000/api/encryption/encode?input=" + req.query.input + "&flag=" + req.query.flag}, function ( error, response, body) {
-    console.log("this is response: " + (body));
+    //console.log("this is response: " + (body));
     holder = JSON.parse(body)
-    console.log(holder.result)
+    //console.log(holder.result)
     
     output=holder.result;
 

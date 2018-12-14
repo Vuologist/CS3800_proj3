@@ -80,8 +80,8 @@
             this
           );
           this.handleOnEncodedChange = this.handleOnEncodedChange.bind(this);
-          this.handleSubmit = this.handleSubmit.bind(this);
           this.encryptMessage = this.encryptMessage.bind(this);
+          this.decryptMessage = this.decryptMessage.bind(this);
         }
 
         handleOnUnencodedChange = event => {
@@ -101,14 +101,14 @@
         encryptMessage = event => {
           event.preventDefault();
           let input = this.state.unencoded;
-          console.log("this is input: " + input);
+          //console.log("this is input: " + input);
           fetch("/api/encode?input=" + input + "&flag=encode")
             .then(data => {
-              console.log(data);
+              //console.log(data);
               return data.json();
             })
             .then(json => {
-              console.log(json.result);
+              //console.log(json.result);
               this.setState({
                 encoded: json.result
               });
@@ -118,14 +118,14 @@
         decryptMessage = event => {
           event.preventDefault();
           let input = this.state.encoded;
-          console.log("this is input: " + input);
+          //console.log("this is input: " + input);
           fetch("/api/encode?input=" + input + "&flag=decode")
             .then(data => {
-              console.log(data);
+              //console.log(data);
               return data.json();
             })
             .then(json => {
-              console.log(json.result);
+              //console.log(json.result);
               this.setState({
                 unencoded: json.result
               });
