@@ -29,8 +29,15 @@
         height: 100%;
       }
 
-      .btn {
-        margin-right: 10px;
+      .seperator {
+        margin: 30px 0px;
+      }
+
+      .line {
+        height: 2;
+        margin-top: 5;
+        margin-bottom: 5;
+        background-color: "black";
       }
     </style>
   </head>
@@ -74,6 +81,7 @@
           );
           this.handleOnEncodedChange = this.handleOnEncodedChange.bind(this);
           this.handleSubmit = this.handleSubmit.bind(this);
+          this.encryptMessage = this.encryptMessage.bind(this);
         }
 
         handleOnUnencodedChange = event => {
@@ -128,6 +136,23 @@
             });
         };
 
+        encryptMessage = event => {
+          event.preventDefault();
+          let input = this.state.unencode;
+          console.log(input);
+          fetch("/api/encode?input=" + input + "&flag=encode")
+            .then(data => {
+              console.log(data);
+              return data.json();
+            })
+            .then(json => {
+              console.log(json.result);
+              this.setState({
+                encoded: json.result
+              });
+            });
+        };
+
         render() {
           return (
             <React.Fragment>
@@ -136,7 +161,7 @@
                   Encryption/Decryption Generator
                 </div>
                 <div className="card-body">
-                  <form onSubmit={this.handleSubmit}>
+                  <form>
                     <div className="form-group">
                       <label htmlFor="unencodedMsg">Unencoded Text</label>
                       <input
@@ -145,9 +170,15 @@
                         name="unencoded"
                         value={this.state.unencoded}
                         onChange={this.handleOnUnencodedChange}
-                        disabled={this.state.encoded}
                       />
                     </div>
+                    <button
+                      onClick={this.encryptMessage}
+                      className="btn btn-primary"
+                    >
+                      Encrypt
+                    </button>
+                    <hr className="seperator" />
                     <div className="form-group">
                       <label htmlFor="encodedMsg">Encoded Text</label>
                       <input
@@ -156,18 +187,10 @@
                         name="encoded"
                         value={this.state.encoded}
                         onChange={this.handleOnEncodedChange}
-                        disabled={this.state.unencoded}
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary">
-                      Submit
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={this.resetFields}
-                    >
-                      Clear
+                    <button className="btn btn-primary">
+                      Decrypt
                     </button>
                   </form>
                 </div>
